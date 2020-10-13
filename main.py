@@ -1,6 +1,7 @@
 import pygame
 from objSnake import Snake
 from objApple import Apple
+from objWall import Wall
 from game_action import game_action
 
 
@@ -12,11 +13,12 @@ def main():
     screen = pygame.display.set_mode((xAxis,yAxis))
 
 
-    apple = Apple(20,20)
+    apple = Apple(275, 275, screen)
     clock = pygame.time.Clock()
-    snake = Snake(0,0)
+    snake = Snake(25, 25, screen)
+    wall = Wall(screen)
     while 1:
-        game_action(apple, clock, screen, snake)
+        game_action(apple, clock, screen, snake, wall)
 
 
 if __name__ == "__main__":
