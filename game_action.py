@@ -2,7 +2,6 @@ import pygame #is this double import a problem?
 import sys
 
 def game_action(apple, clock, screen, snake, wall):
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -13,17 +12,19 @@ def game_action(apple, clock, screen, snake, wall):
 
     snake.advance()
 #    apple.coords()
-    snake.coords()
+#    snake.coords()
     #I might do if they are in proximity
 #    if snake.coords() == apple.coords():
 #        apple.respawn()
 
     if snake.collide(apple):
         apple.respawn()
-        print(apple.coords())
+        snake.addLink()
+
+    if snake.collideItself():
+        snake.respawn()
 
     if not snake.collide(wall):
-#        print ("got out")
         snake.respawn()
     else:
         screen.fill((255,255,255))
@@ -32,4 +33,4 @@ def game_action(apple, clock, screen, snake, wall):
         snake.draw(screen)
 
     pygame.display.update()
-    clock.tick(30)
+    clock.tick(5)
