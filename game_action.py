@@ -12,19 +12,17 @@ def game_action(apple, clock, screen, snake, wall):
 
 
     snake.advance()
-#    apple.coords()
-    snake.coords()
-    #I might do if they are in proximity
-#    if snake.coords() == apple.coords():
-#        apple.respawn()
-
+    #db.addLastMove = snake.lastMove()
     if snake.collide(apple):
         apple.respawn()
-        print(apple.coords())
+        #db.apple() = apple.coords() #This adds a new row
 
     if not snake.collide(wall):
-#        print ("got out")
         snake.respawn()
+        #db.cleanUp()
+            #Save moves, score, apple positions
+            #Add a new row
+            
     else:
         screen.fill((255,255,255))
         wall.draw(screen)
