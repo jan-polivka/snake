@@ -1,7 +1,7 @@
 import pygame
 import os
 
-wall_image = os.path.join("D:\interview_prep\python\snake", "wall_image.png")
+wall_image = os.path.join("D:\snake", "wall_image.png")
 
 
 class Wall(pygame.sprite.Sprite):

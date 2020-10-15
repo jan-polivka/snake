@@ -2,7 +2,7 @@ import pygame
 import os
 import random
 
-apple_image = os.path.join("D:\interview_prep\python\snake", "apple_image.png")
+apple_image = os.path.join("D:\snake", "apple_image.png")
 random.seed()
 
 class Apple(pygame.sprite.Sprite):
