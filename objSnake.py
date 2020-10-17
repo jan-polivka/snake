@@ -29,7 +29,8 @@ class Snake(pygame.sprite.Sprite):
         self.screen = screen
 
     def coords(self):
-        print("{} {}".format(self.rect.x, self.rect.y))
+#        print("{} {}".format(self.rect.x, self.rect.y))
+        return self.rect.x, self.rect.y
 
     def collide(self, otherSprite):
         return self.rect.colliderect(otherSprite)
@@ -82,12 +83,15 @@ class Snake(pygame.sprite.Sprite):
             self.next = Link(self.prevX, self.prevY, self.screen)
 
     def respawn(self):
-        self.rect.x = 50*random.randint(0,8) + 25
-        self.rect.y = 50*random.randint(0,8) + 25
+        self.rect.x = 50*random.randint(2,6) + 25
+        self.rect.y = 50*random.randint(2,6) + 25
+        self.lastDir = None
         if self.next:
             self.next.deallocate()
             self.next = None
 
+    def lastMove(self):
+        return self.lastDir
 
     def moveLeft(self):
         self.prevX, self.prevY = self.rect.x, self.rect.y

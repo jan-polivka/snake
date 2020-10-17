@@ -19,8 +19,8 @@ class Apple(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
 
     def coords(self):
-        print("{} {}".format(self.rect.x, self.rect.y))
-#        return {self.rect.x, self.rect.y}
+#        print("{} {}".format(self.rect.x, self.rect.y))
+        return self.rect.x, self.rect.y
 
     def respawn(self):
         self.rect.x = 50*random.randint(0,8) + 25
