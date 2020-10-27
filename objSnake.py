@@ -28,6 +28,35 @@ class Snake(pygame.sprite.Sprite):
 
         self.screen = screen
 
+
+    def checkAround(self, wall):
+        detections = [0.0] * 4
+        self.simpleLeft()
+        if not self.rect.colliderect(wall):
+            detections[0] = -1.0
+        else:
+            detections[0] = 1.0
+        self.simpleRight()
+        self.simpleRight()
+        if not self.rect.colliderect(wall):
+            detections[1] = -1.0
+        else:
+            detections[1] = 1.0
+        self.simpleLeft()
+        self.simpleUp()
+        if not self.rect.colliderect(wall):
+            detections[2] = -1.0
+        else:
+            detections[2] = 1.0
+        self.simpleDown()
+        self.simpleDown()
+        if not self.rect.colliderect(wall):
+            detections[3] = -1.0
+        else:
+            detections[3] = 1.0
+        self.simpleUp()
+        return detections
+
     def coords(self):
 #        print("{} {}".format(self.rect.x, self.rect.y))
         return self.rect.x, self.rect.y
@@ -47,7 +76,24 @@ class Snake(pygame.sprite.Sprite):
         if self.next:
             self.next.draw(screen)
 
-    def advance(self):
+    def advanceComputer(self, move):
+        pressed = pygame.key.get_pressed()
+        if move == "up":
+            self.moveUp()
+            self.lastDir = "up"
+        elif move == "down":
+            self.moveDown()
+            self.lastDir = "down"
+        elif move == "right":
+            self.moveRight()
+            self.lastDir = "right"
+        elif move == "left":
+            self.moveLeft()
+            self.lastDir = "left"
+
+
+
+    def advanceHuman(self):
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_UP]:
             self.moveUp()
@@ -118,6 +164,19 @@ class Snake(pygame.sprite.Sprite):
         self.rect.y += self.movY
         if self.next:
             self.next.propMov(self.prevX, self.prevY)
+
+
+    def simpleLeft(self):
+        self.rect.x -= self.movX
+
+    def simpleRight(self):
+        self.rect.x += self.movX
+
+    def simpleUp(self):
+        self.rect.y -= self.movY
+
+    def simpleDown(self):
+        self.rect.y += self.movY
 
 
 class Link(pygame.sprite.Sprite):
