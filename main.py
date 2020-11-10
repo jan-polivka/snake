@@ -4,7 +4,7 @@ from objApple import Apple
 from objWall import Wall
 from objDB import DB
 from game_action import game_action
-from train import Net, predict, train
+from model_apple import Net, predict, train
 from game_predict import game_predict
 
 import random
@@ -24,7 +24,7 @@ def main():
     snake = Snake(50*random.randint(2,6) + 25, 50*random.randint(2,6) + 25, screen)
 #    db.snake(snake.coords())
     wall = Wall(screen)
-    while db.retGames() < 20:
+    while db.retGames() < 200:
         game_action(apple, clock, db, screen, snake, wall)
 
 #    db.printDataList()

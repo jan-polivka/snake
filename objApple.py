@@ -1,6 +1,7 @@
 import pygame
 import os
 import random
+import math
 
 apple_image = os.path.join("D:\snake", "apple_image.png")
 random.seed()
@@ -17,10 +18,6 @@ class Apple(pygame.sprite.Sprite):
 
     def draw(self,screen):
         screen.blit(self.image, self.rect)
-
-    def coords(self):
-#        print("{} {}".format(self.rect.x, self.rect.y))
-        return self.rect.x, self.rect.y
 
     def respawn(self):
         self.rect.x = 50*random.randint(0,8) + 25

@@ -12,22 +12,20 @@ import numpy as np
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.linOne = nn.Linear(5,1) #this will be expanded to 5,1 for that suggested direction, maybe
-        #self.linOut = nn.Linear(4,1)
-
+        self.linOne = nn.Linear(6,25)
+        self.linTwo = nn.Linear(25,1)
 
     def forward(self, x):
         x = self.linOne(x)
+        x = F.relu(x)
+        x = self.linTwo(x)
         x = F.relu(x)
         return x
 
 
 def train(myNet, db):
 
-    #split data into the four directions+suggested and the result
-    #how do you reward the model?
-    
-#    db.dataList???
+    print ("Training start")
     x = []
     y = []
     for move in db.dataList:
@@ -53,7 +51,7 @@ def train(myNet, db):
     criterion = nn.MSELoss()
     optimizer = optim.Adam(myNet.parameters(), lr=0.01)
 
-    for epoch in range(10000):
+    for epoch in range(1000):
         y_pred = myNet(x_train) #Here, I give the net training data and it returns predictions
 
         y_pred = torch.squeeze(y_pred) #what does squeeze mean?
@@ -66,9 +64,11 @@ def train(myNet, db):
     MODEL_PATH = 'model.pth'
     torch.save(myNet, MODEL_PATH)
     #myNet = torch.load(MODEL_PATH)
+    print ("Training finish")
 
 
 def predict(myNet, data):
+    print (data)
     t = torch.as_tensor(data).float()
     output = myNet(t)
 #    print (output.item())

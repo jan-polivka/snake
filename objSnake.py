@@ -28,6 +28,48 @@ class Snake(pygame.sprite.Sprite):
 
         self.screen = screen
 
+    def advanceComputer(self, move):
+        if move == "down":
+            return self.complexDown()
+        elif move == "left":
+            return self.complexLeft()
+        elif move == "right":
+            return self.complexRight()
+        elif move == "up":
+            return self.complexUp()
+
+    def advanceHuman(self):
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_DOWN]:
+            return self.complexDown()
+        elif pressed[pygame.K_LEFT]:
+            return self.complexLeft()
+        elif pressed[pygame.K_RIGHT]:
+            return self.complexRight()
+        elif pressed[pygame.K_UP]:
+            return self.complexUp()
+
+        else:
+            if not self.lastDir:
+                dirs = ["up", "down", "left", "right"]
+                self.lastDir = random.choice(dirs)
+
+            if self.lastDir == "up":
+                self.moveUp()
+            elif self.lastDir == "down": 
+                self.moveDown()
+            elif self.lastDir == "right":
+                self.moveRight()
+            elif self.lastDir == "left":
+                self.moveLeft()
+
+            return True
+
+    def addLink(self):
+        if self.next:
+            self.next.addLink()
+        else:
+            self.next = Link(self.prevX, self.prevY, self.screen)
 
     def checkAround(self, wall):
         detections = [0.0] * 4
@@ -58,7 +100,6 @@ class Snake(pygame.sprite.Sprite):
         return detections
 
     def coords(self):
-#        print("{} {}".format(self.rect.x, self.rect.y))
         return self.rect.x, self.rect.y
 
     def collide(self, otherSprite):
@@ -71,62 +112,68 @@ class Snake(pygame.sprite.Sprite):
             return self.next.collideHead(self)
 
 
+    def complexDown(self):
+        self.lastDir = "down"
+        if self.next:
+            self.simpleDown()
+            if self.rect.colliderect(self.next):
+                return False
+            else:
+                self.simpleUp()
+                self.moveDown()
+                return True
+        else:
+            self.moveDown()
+            return True
+
+    def complexLeft(self):
+        self.lastDir = "left"
+        if self.next:
+            self.simpleLeft()
+            if self.rect.colliderect(self.next):
+                return False
+            else:
+                self.simpleRight()
+                self.moveLeft()
+                return True
+        else:
+            self.moveLeft()
+            return True
+
+    def complexRight(self):
+        self.lastDir = "right"
+        if self.next:
+            self.simpleRight()
+            if self.rect.colliderect(self.next):
+                return False
+            else:
+                self.simpleLeft()
+                self.moveRight()
+                return True
+        else:
+            self.moveRight()
+            return True
+
+    def complexUp(self):
+        self.lastDir = "up"
+        if self.next:
+            self.simpleUp()
+            if self.rect.colliderect(self.next):
+                return False
+            else:
+                self.simpleDown()
+                self.moveUp()
+                return True
+        else:
+            self.moveUp()
+            return True
+
+
     def draw(self, screen):
         screen.blit(self.image, self.rect)
         if self.next:
             self.next.draw(screen)
 
-    def advanceComputer(self, move):
-        pressed = pygame.key.get_pressed()
-        if move == "up":
-            self.moveUp()
-            self.lastDir = "up"
-        elif move == "down":
-            self.moveDown()
-            self.lastDir = "down"
-        elif move == "right":
-            self.moveRight()
-            self.lastDir = "right"
-        elif move == "left":
-            self.moveLeft()
-            self.lastDir = "left"
-
-
-
-    def advanceHuman(self):
-        pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_UP]:
-            self.moveUp()
-            self.lastDir = "up"
-        elif pressed[pygame.K_DOWN]:
-            self.moveDown()
-            self.lastDir = "down"
-        elif pressed[pygame.K_RIGHT]:
-            self.moveRight()
-            self.lastDir = "right"
-        elif pressed[pygame.K_LEFT]:
-            self.moveLeft()
-            self.lastDir = "left"
-
-        else:
-            if not self.lastDir:
-                dirs = ["up", "down", "left", "right"]
-                self.lastDir = random.choice(dirs)
-
-            if self.lastDir == "up":
-                self.moveUp()
-            elif self.lastDir == "down": 
-                self.moveDown()
-            elif self.lastDir == "right":
-                self.moveRight()
-            elif self.lastDir == "left":
-                self.moveLeft()
-
-    def addLink(self):
-        if self.next:
-            self.next.addLink()
-        else:
-            self.next = Link(self.prevX, self.prevY, self.screen)
 
     def respawn(self):
         self.rect.x = 50*random.randint(2,6) + 25
@@ -134,7 +181,8 @@ class Snake(pygame.sprite.Sprite):
         self.lastDir = None
         if self.next:
             self.next.deallocate()
-            self.next = None
+
+        self.addLink()
 
     def lastMove(self):
         return self.lastDir

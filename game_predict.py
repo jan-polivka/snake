@@ -1,7 +1,7 @@
 import pygame #is this double import a problem?
 import sys
 
-from train import predict
+from model_apple import predict
 
 import random
 
@@ -14,11 +14,15 @@ def game_predict(apple, clock, db, net, screen, snake, wall):
     dirList = ["left","right","up","down"]
     selecting = True
     randSel = 0
+    state.append(db.checkDis(apple, snake))
     state.append(randSel)
+    #what is this thing?
+    #I know!
+    #It cycles through possible directions to find one that
+    #we should take by predict return 1
     while selecting == True:
         randSel = random.randint(0,3)
         state[-1] = randSel
-        print (state)
         move = predict(net, state)
         if not move:
             selecting = False
@@ -28,15 +32,16 @@ def game_predict(apple, clock, db, net, screen, snake, wall):
     if snake.collide(apple):
         apple.respawn()
         snake.addLink()
-        #db.apple(apple.coords())
 
     if snake.collideItself():
+#        print (state)
+        print ("dead")
         snake.respawn()
-        #db.snake(snake.coords())
 
     if not snake.collide(wall):
+#        print (state)
+        print ("dead")
         snake.respawn()
-        #db.snake(snake.coords())
             
     else:
         screen.fill((255,255,255))
