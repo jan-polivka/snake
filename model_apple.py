@@ -32,12 +32,7 @@ def train(myNet, db):
         x.append(move[0:len(move)-1])
         y.append(move[-1])
 
-#    print ("XXXXXXXXXXXXXXX")
-#    print(x)
-#    print(len(x))
     x = torch.tensor(x)
-#    print ("YYYYYYYYYYYYYYY")
-#    print(y)
     y = torch.tensor(y)
 
     RANDOM_SEED = 42
@@ -68,11 +63,9 @@ def train(myNet, db):
 
 
 def predict(myNet, data):
-    print (data)
+    print ("input data" + str(data))
     t = torch.as_tensor(data).float()
     output = myNet(t)
-#    print (output.item())
-#    print (round(output.item()) == 1.0)
     if round(output.item()) == 1.0:
         return True
     else:

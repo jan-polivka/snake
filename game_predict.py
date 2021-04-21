@@ -30,18 +30,21 @@ def game_predict(apple, clock, db, net, screen, snake, wall):
     snake.advanceComputer(dirList[randSel])
 
     if snake.collide(apple):
+        print ("apple")
         apple.respawn()
         snake.addLink()
 
     if snake.collideItself():
-#        print (state)
-        print ("dead")
+        print ("self")
+        apple.coords()
         snake.respawn()
+        snake.coords()
 
     if not snake.collide(wall):
-#        print (state)
-        print ("dead")
+        print ("wall")
+        apple.coords()
         snake.respawn()
+        snake.coords()
             
     else:
         screen.fill((255,255,255))

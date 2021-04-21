@@ -30,13 +30,13 @@ class Snake(pygame.sprite.Sprite):
 
     def advanceComputer(self, move):
         if move == "down":
-            return self.complexDown()
+            self.complexDown()
         elif move == "left":
-            return self.complexLeft()
+            self.complexLeft()
         elif move == "right":
-            return self.complexRight()
+            self.complexRight()
         elif move == "up":
-            return self.complexUp()
+            self.complexUp()
 
     def advanceHuman(self):
         pressed = pygame.key.get_pressed()
@@ -74,25 +74,25 @@ class Snake(pygame.sprite.Sprite):
     def checkAround(self, wall):
         detections = [0.0] * 4
         self.simpleLeft()
-        if not self.rect.colliderect(wall):
+        if not self.rect.colliderect(wall) or self.collideItself():
             detections[0] = -1.0
         else:
             detections[0] = 1.0
         self.simpleRight()
         self.simpleRight()
-        if not self.rect.colliderect(wall):
+        if not self.rect.colliderect(wall) or self.collideItself():
             detections[1] = -1.0
         else:
             detections[1] = 1.0
         self.simpleLeft()
         self.simpleUp()
-        if not self.rect.colliderect(wall):
+        if not self.rect.colliderect(wall) or self.collideItself():
             detections[2] = -1.0
         else:
             detections[2] = 1.0
         self.simpleDown()
         self.simpleDown()
-        if not self.rect.colliderect(wall):
+        if not self.rect.colliderect(wall) or self.collideItself():
             detections[3] = -1.0
         else:
             detections[3] = 1.0
@@ -168,6 +168,8 @@ class Snake(pygame.sprite.Sprite):
             self.moveUp()
             return True
 
+    def coords(self):
+        print("snake: " + str(self.rect.x) + ", " + str(self.rect.y))
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

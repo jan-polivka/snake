@@ -24,7 +24,7 @@ def main():
     snake = Snake(50*random.randint(2,6) + 25, 50*random.randint(2,6) + 25, screen)
 #    db.snake(snake.coords())
     wall = Wall(screen)
-    while db.retGames() < 200:
+    while db.retGames() < 2000:
         game_action(apple, clock, db, screen, snake, wall)
 
 #    db.printDataList()
